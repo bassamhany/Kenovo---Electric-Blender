@@ -1,0 +1,1565 @@
+
+SWE_APP.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000094a  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         0000002c  00800060  0000094a  000009de  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000042  0080008c  0080008c  00000a0a  2**0
+                  ALLOC
+  3 .stab         00001140  00000000  00000000  00000a0c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000840  00000000  00000000  00001b4c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   8:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  10:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  14:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  18:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  1c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  28:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  40:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  44:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  48:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  4c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  50:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	ea e4       	ldi	r30, 0x4A	; 74
+  68:	f9 e0       	ldi	r31, 0x09	; 9
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
+
+0000006c <.do_copy_data_loop>:
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+
+00000070 <.do_copy_data_start>:
+  70:	ac 38       	cpi	r26, 0x8C	; 140
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
+
+00000076 <__do_clear_bss>:
+  76:	10 e0       	ldi	r17, 0x00	; 0
+  78:	ac e8       	ldi	r26, 0x8C	; 140
+  7a:	b0 e0       	ldi	r27, 0x00	; 0
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	ae 3c       	cpi	r26, 0xCE	; 206
+  82:	b1 07       	cpc	r27, r17
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0e 94 f5 02 	call	0x5ea	; 0x5ea <main>
+  8a:	0c 94 a3 04 	jmp	0x946	; 0x946 <_exit>
+
+0000008e <__bad_interrupt>:
+  8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000092 <DCMotor_voidInit>:
+static u8 DCMotor_u8Speedflag;
+
+const static  u8 DCMotor_ArrayOfSpeeds[3] = { DCMotor_SPEED1, DCMotor_SPEED2, DCMotor_SPEED3 };
+
+extern void DCMotor_voidInit(void)
+{
+  92:	df 93       	push	r29
+  94:	cf 93       	push	r28
+  96:	cd b7       	in	r28, 0x3d	; 61
+  98:	de b7       	in	r29, 0x3e	; 62
+	DCMotor_u8Speedflag = DCMotor_INITSPEED;
+  9a:	10 92 8c 00 	sts	0x008C, r1
+#if DCMotor_INITSTATE == DCMotor_OFF
+	PWM_Set_Duty_Cycle(DCMotor_OFF);
+
+#elif DCMotor_INITSTATE == DCMotor_ON
+	PWM_Set_Duty_Cycle(DCMotor_ArrayOfSpeeds[DCMotor_u8Speedflag]);
+  9e:	80 91 8c 00 	lds	r24, 0x008C
+  a2:	88 2f       	mov	r24, r24
+  a4:	90 e0       	ldi	r25, 0x00	; 0
+  a6:	fc 01       	movw	r30, r24
+  a8:	e0 59       	subi	r30, 0x90	; 144
+  aa:	ff 4f       	sbci	r31, 0xFF	; 255
+  ac:	80 81       	ld	r24, Z
+  ae:	0e 94 85 03 	call	0x70a	; 0x70a <PWM_Set_Duty_Cycle>
+
+#endif
+}
+  b2:	cf 91       	pop	r28
+  b4:	df 91       	pop	r29
+  b6:	08 95       	ret
+
+000000b8 <DCMotor_voidOn>:
+
+extern void DCMotor_voidOn(void)
+{
+  b8:	df 93       	push	r29
+  ba:	cf 93       	push	r28
+  bc:	cd b7       	in	r28, 0x3d	; 61
+  be:	de b7       	in	r29, 0x3e	; 62
+	PWM_Set_Duty_Cycle(DCMotor_ArrayOfSpeeds[DCMotor_u8Speedflag]);
+  c0:	80 91 8c 00 	lds	r24, 0x008C
+  c4:	88 2f       	mov	r24, r24
+  c6:	90 e0       	ldi	r25, 0x00	; 0
+  c8:	fc 01       	movw	r30, r24
+  ca:	e0 59       	subi	r30, 0x90	; 144
+  cc:	ff 4f       	sbci	r31, 0xFF	; 255
+  ce:	80 81       	ld	r24, Z
+  d0:	0e 94 85 03 	call	0x70a	; 0x70a <PWM_Set_Duty_Cycle>
+}
+  d4:	cf 91       	pop	r28
+  d6:	df 91       	pop	r29
+  d8:	08 95       	ret
+
+000000da <DCMotor_voidOff>:
+
+extern void DCMotor_voidOff(void)
+{
+  da:	df 93       	push	r29
+  dc:	cf 93       	push	r28
+  de:	cd b7       	in	r28, 0x3d	; 61
+  e0:	de b7       	in	r29, 0x3e	; 62
+	PWM_Set_Duty_Cycle(DCMotor_OFF);
+  e2:	80 e0       	ldi	r24, 0x00	; 0
+  e4:	0e 94 85 03 	call	0x70a	; 0x70a <PWM_Set_Duty_Cycle>
+}
+  e8:	cf 91       	pop	r28
+  ea:	df 91       	pop	r29
+  ec:	08 95       	ret
+
+000000ee <DCMotor_voidChangeSpeed>:
+
+extern void DCMotor_voidChangeSpeed(u8 copy_u8Speed)
+{
+  ee:	df 93       	push	r29
+  f0:	cf 93       	push	r28
+  f2:	0f 92       	push	r0
+  f4:	cd b7       	in	r28, 0x3d	; 61
+  f6:	de b7       	in	r29, 0x3e	; 62
+  f8:	89 83       	std	Y+1, r24	; 0x01
+	DCMotor_u8Speedflag = copy_u8Speed;
+  fa:	89 81       	ldd	r24, Y+1	; 0x01
+  fc:	80 93 8c 00 	sts	0x008C, r24
+	PWM_Set_Duty_Cycle(DCMotor_ArrayOfSpeeds[DCMotor_u8Speedflag]);
+ 100:	80 91 8c 00 	lds	r24, 0x008C
+ 104:	88 2f       	mov	r24, r24
+ 106:	90 e0       	ldi	r25, 0x00	; 0
+ 108:	fc 01       	movw	r30, r24
+ 10a:	e0 59       	subi	r30, 0x90	; 144
+ 10c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 10e:	80 81       	ld	r24, Z
+ 110:	0e 94 85 03 	call	0x70a	; 0x70a <PWM_Set_Duty_Cycle>
+}
+ 114:	0f 90       	pop	r0
+ 116:	cf 91       	pop	r28
+ 118:	df 91       	pop	r29
+ 11a:	08 95       	ret
+
+0000011c <DIO_u8ReadPortVal>:
+/*****************************Functions ***********************************/
+/**************************************************************************/
+
+/*comment!:read port value*/
+extern u8 DIO_u8ReadPortVal(u8 Copy_u8PortIdx, u8* Copy_u8PtrVal)
+{
+ 11c:	df 93       	push	r29
+ 11e:	cf 93       	push	r28
+ 120:	00 d0       	rcall	.+0      	; 0x122 <DIO_u8ReadPortVal+0x6>
+ 122:	00 d0       	rcall	.+0      	; 0x124 <DIO_u8ReadPortVal+0x8>
+ 124:	cd b7       	in	r28, 0x3d	; 61
+ 126:	de b7       	in	r29, 0x3e	; 62
+ 128:	8a 83       	std	Y+2, r24	; 0x02
+ 12a:	7c 83       	std	Y+4, r23	; 0x04
+ 12c:	6b 83       	std	Y+3, r22	; 0x03
+	u8 Local_u8State;
+	if(Copy_u8PortIdx>NUMBER_OF_PINS)
+ 12e:	8a 81       	ldd	r24, Y+2	; 0x02
+ 130:	80 32       	cpi	r24, 0x20	; 32
+ 132:	10 f0       	brcs	.+4      	; 0x138 <DIO_u8ReadPortVal+0x1c>
+	{
+		Local_u8State = u8ERROR;
+ 134:	19 82       	std	Y+1, r1	; 0x01
+ 136:	11 c0       	rjmp	.+34     	; 0x15a <DIO_u8ReadPortVal+0x3e>
+	}
+		else
+		{
+			Local_u8State = u8OK;
+ 138:	81 e0       	ldi	r24, 0x01	; 1
+ 13a:	89 83       	std	Y+1, r24	; 0x01
+			*Copy_u8PtrVal=*DIO_u8PINArr[Copy_u8PortIdx];
+ 13c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 13e:	88 2f       	mov	r24, r24
+ 140:	90 e0       	ldi	r25, 0x00	; 0
+ 142:	88 0f       	add	r24, r24
+ 144:	99 1f       	adc	r25, r25
+ 146:	fc 01       	movw	r30, r24
+ 148:	e5 58       	subi	r30, 0x85	; 133
+ 14a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 14c:	01 90       	ld	r0, Z+
+ 14e:	f0 81       	ld	r31, Z
+ 150:	e0 2d       	mov	r30, r0
+ 152:	80 81       	ld	r24, Z
+ 154:	eb 81       	ldd	r30, Y+3	; 0x03
+ 156:	fc 81       	ldd	r31, Y+4	; 0x04
+ 158:	80 83       	st	Z, r24
+		}
+	return Local_u8State;
+ 15a:	89 81       	ldd	r24, Y+1	; 0x01
+}
+ 15c:	0f 90       	pop	r0
+ 15e:	0f 90       	pop	r0
+ 160:	0f 90       	pop	r0
+ 162:	0f 90       	pop	r0
+ 164:	cf 91       	pop	r28
+ 166:	df 91       	pop	r29
+ 168:	08 95       	ret
+
+0000016a <DIO_u8WritePortVal>:
+
+/* Comment!: Write Port Value */
+extern u8 DIO_u8WritePortVal(u8 Copy_u8PortIdx,u8 Copy_u8PortVal)
+{
+ 16a:	df 93       	push	r29
+ 16c:	cf 93       	push	r28
+ 16e:	00 d0       	rcall	.+0      	; 0x170 <DIO_u8WritePortVal+0x6>
+ 170:	0f 92       	push	r0
+ 172:	cd b7       	in	r28, 0x3d	; 61
+ 174:	de b7       	in	r29, 0x3e	; 62
+ 176:	8a 83       	std	Y+2, r24	; 0x02
+ 178:	6b 83       	std	Y+3, r22	; 0x03
+	u8 Local_u8State;
+		if(Copy_u8PortIdx>NUMBER_OF_PINS)
+ 17a:	8a 81       	ldd	r24, Y+2	; 0x02
+ 17c:	80 32       	cpi	r24, 0x20	; 32
+ 17e:	10 f0       	brcs	.+4      	; 0x184 <DIO_u8WritePortVal+0x1a>
+		{
+			Local_u8State = u8ERROR;
+ 180:	19 82       	std	Y+1, r1	; 0x01
+ 182:	0f c0       	rjmp	.+30     	; 0x1a2 <DIO_u8WritePortVal+0x38>
+		}
+			else
+			{
+				Local_u8State = u8OK;
+ 184:	81 e0       	ldi	r24, 0x01	; 1
+ 186:	89 83       	std	Y+1, r24	; 0x01
+				*DIO_u8PORTArr[Copy_u8PortIdx]=Copy_u8PortVal;
+ 188:	8a 81       	ldd	r24, Y+2	; 0x02
+ 18a:	88 2f       	mov	r24, r24
+ 18c:	90 e0       	ldi	r25, 0x00	; 0
+ 18e:	88 0f       	add	r24, r24
+ 190:	99 1f       	adc	r25, r25
+ 192:	fc 01       	movw	r30, r24
+ 194:	ed 58       	subi	r30, 0x8D	; 141
+ 196:	ff 4f       	sbci	r31, 0xFF	; 255
+ 198:	01 90       	ld	r0, Z+
+ 19a:	f0 81       	ld	r31, Z
+ 19c:	e0 2d       	mov	r30, r0
+ 19e:	8b 81       	ldd	r24, Y+3	; 0x03
+ 1a0:	80 83       	st	Z, r24
+			}
+
+
+	return Local_u8State;
+ 1a2:	89 81       	ldd	r24, Y+1	; 0x01
+}
+ 1a4:	0f 90       	pop	r0
+ 1a6:	0f 90       	pop	r0
+ 1a8:	0f 90       	pop	r0
+ 1aa:	cf 91       	pop	r28
+ 1ac:	df 91       	pop	r29
+ 1ae:	08 95       	ret
+
+000001b0 <DIO_u8WritePortDir>:
+
+
+/* Comment!: Write Port Direction */
+extern u8 DIO_u8WritePortDir(u8 Copy_u8PortIdx,u8 Copy_u8PortDir)
+{
+ 1b0:	df 93       	push	r29
+ 1b2:	cf 93       	push	r28
+ 1b4:	00 d0       	rcall	.+0      	; 0x1b6 <DIO_u8WritePortDir+0x6>
+ 1b6:	0f 92       	push	r0
+ 1b8:	cd b7       	in	r28, 0x3d	; 61
+ 1ba:	de b7       	in	r29, 0x3e	; 62
+ 1bc:	8a 83       	std	Y+2, r24	; 0x02
+ 1be:	6b 83       	std	Y+3, r22	; 0x03
+	u8 Local_u8State;
+			if(Copy_u8PortIdx>NUMBER_OF_PINS)
+ 1c0:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1c2:	80 32       	cpi	r24, 0x20	; 32
+ 1c4:	10 f0       	brcs	.+4      	; 0x1ca <DIO_u8WritePortDir+0x1a>
+			{
+				Local_u8State = u8ERROR;
+ 1c6:	19 82       	std	Y+1, r1	; 0x01
+ 1c8:	0f c0       	rjmp	.+30     	; 0x1e8 <DIO_u8WritePortDir+0x38>
+			}
+				else
+				{
+					Local_u8State = u8OK;
+ 1ca:	81 e0       	ldi	r24, 0x01	; 1
+ 1cc:	89 83       	std	Y+1, r24	; 0x01
+					*DIO_u8DDRArr[Copy_u8PortIdx]=Copy_u8PortDir;
+ 1ce:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1d0:	88 2f       	mov	r24, r24
+ 1d2:	90 e0       	ldi	r25, 0x00	; 0
+ 1d4:	88 0f       	add	r24, r24
+ 1d6:	99 1f       	adc	r25, r25
+ 1d8:	fc 01       	movw	r30, r24
+ 1da:	ed 57       	subi	r30, 0x7D	; 125
+ 1dc:	ff 4f       	sbci	r31, 0xFF	; 255
+ 1de:	01 90       	ld	r0, Z+
+ 1e0:	f0 81       	ld	r31, Z
+ 1e2:	e0 2d       	mov	r30, r0
+ 1e4:	8b 81       	ldd	r24, Y+3	; 0x03
+ 1e6:	80 83       	st	Z, r24
+				}
+
+
+		return Local_u8State;
+ 1e8:	89 81       	ldd	r24, Y+1	; 0x01
+}
+ 1ea:	0f 90       	pop	r0
+ 1ec:	0f 90       	pop	r0
+ 1ee:	0f 90       	pop	r0
+ 1f0:	cf 91       	pop	r28
+ 1f2:	df 91       	pop	r29
+ 1f4:	08 95       	ret
+
+000001f6 <DIO_u8ReadPortDir>:
+/* Comment!: Read Port Direction */
+extern u8 DIO_u8ReadPortDir(u8 Copy_u8PortIdx,u8* Copy_u8PtrToDir)
+{
+ 1f6:	df 93       	push	r29
+ 1f8:	cf 93       	push	r28
+ 1fa:	00 d0       	rcall	.+0      	; 0x1fc <DIO_u8ReadPortDir+0x6>
+ 1fc:	00 d0       	rcall	.+0      	; 0x1fe <DIO_u8ReadPortDir+0x8>
+ 1fe:	cd b7       	in	r28, 0x3d	; 61
+ 200:	de b7       	in	r29, 0x3e	; 62
+ 202:	8a 83       	std	Y+2, r24	; 0x02
+ 204:	7c 83       	std	Y+4, r23	; 0x04
+ 206:	6b 83       	std	Y+3, r22	; 0x03
+	u8 Local_u8State;
+			if(Copy_u8PortIdx>NUMBER_OF_PINS)
+ 208:	8a 81       	ldd	r24, Y+2	; 0x02
+ 20a:	80 32       	cpi	r24, 0x20	; 32
+ 20c:	10 f0       	brcs	.+4      	; 0x212 <DIO_u8ReadPortDir+0x1c>
+			{
+				Local_u8State = u8ERROR;
+ 20e:	19 82       	std	Y+1, r1	; 0x01
+ 210:	11 c0       	rjmp	.+34     	; 0x234 <DIO_u8ReadPortDir+0x3e>
+			}
+				else
+				{
+					Local_u8State = u8OK;
+ 212:	81 e0       	ldi	r24, 0x01	; 1
+ 214:	89 83       	std	Y+1, r24	; 0x01
+					*Copy_u8PtrToDir=*DIO_u8DDRArr[Copy_u8PortIdx];
+ 216:	8a 81       	ldd	r24, Y+2	; 0x02
+ 218:	88 2f       	mov	r24, r24
+ 21a:	90 e0       	ldi	r25, 0x00	; 0
+ 21c:	88 0f       	add	r24, r24
+ 21e:	99 1f       	adc	r25, r25
+ 220:	fc 01       	movw	r30, r24
+ 222:	ed 57       	subi	r30, 0x7D	; 125
+ 224:	ff 4f       	sbci	r31, 0xFF	; 255
+ 226:	01 90       	ld	r0, Z+
+ 228:	f0 81       	ld	r31, Z
+ 22a:	e0 2d       	mov	r30, r0
+ 22c:	80 81       	ld	r24, Z
+ 22e:	eb 81       	ldd	r30, Y+3	; 0x03
+ 230:	fc 81       	ldd	r31, Y+4	; 0x04
+ 232:	80 83       	st	Z, r24
+				}
+
+
+		return Local_u8State;
+ 234:	89 81       	ldd	r24, Y+1	; 0x01
+}
+ 236:	0f 90       	pop	r0
+ 238:	0f 90       	pop	r0
+ 23a:	0f 90       	pop	r0
+ 23c:	0f 90       	pop	r0
+ 23e:	cf 91       	pop	r28
+ 240:	df 91       	pop	r29
+ 242:	08 95       	ret
+
+00000244 <DIO_u8ReadPinVal>:
+/* Comment!: Read Pin Value */
+extern u8 DIO_u8ReadPinVal(u8 Copy_u8PinIdx,u8* Copy_u8PtrToVal)
+{
+ 244:	df 93       	push	r29
+ 246:	cf 93       	push	r28
+ 248:	00 d0       	rcall	.+0      	; 0x24a <DIO_u8ReadPinVal+0x6>
+ 24a:	00 d0       	rcall	.+0      	; 0x24c <DIO_u8ReadPinVal+0x8>
+ 24c:	00 d0       	rcall	.+0      	; 0x24e <DIO_u8ReadPinVal+0xa>
+ 24e:	cd b7       	in	r28, 0x3d	; 61
+ 250:	de b7       	in	r29, 0x3e	; 62
+ 252:	8c 83       	std	Y+4, r24	; 0x04
+ 254:	7e 83       	std	Y+6, r23	; 0x06
+ 256:	6d 83       	std	Y+5, r22	; 0x05
+	u8 Local_u8State;
+	u8 Local_u8PortNum = Copy_u8PinIdx / NUMBER_OF_PINS_PORT;
+ 258:	8c 81       	ldd	r24, Y+4	; 0x04
+ 25a:	86 95       	lsr	r24
+ 25c:	86 95       	lsr	r24
+ 25e:	86 95       	lsr	r24
+ 260:	8a 83       	std	Y+2, r24	; 0x02
+	u8 Local_u8PinNum = Copy_u8PinIdx % NUMBER_OF_PINS_PORT;
+ 262:	8c 81       	ldd	r24, Y+4	; 0x04
+ 264:	87 70       	andi	r24, 0x07	; 7
+ 266:	89 83       	std	Y+1, r24	; 0x01
+	if(Copy_u8PinIdx >NUMBER_OF_PINS)
+ 268:	8c 81       	ldd	r24, Y+4	; 0x04
+ 26a:	80 32       	cpi	r24, 0x20	; 32
+ 26c:	10 f0       	brcs	.+4      	; 0x272 <DIO_u8ReadPinVal+0x2e>
+		{
+		Local_u8State= u8ERROR;
+ 26e:	1b 82       	std	Y+3, r1	; 0x03
+ 270:	1e c0       	rjmp	.+60     	; 0x2ae <DIO_u8ReadPinVal+0x6a>
+		}
+		else
+		{
+			Local_u8State = u8OK;
+ 272:	81 e0       	ldi	r24, 0x01	; 1
+ 274:	8b 83       	std	Y+3, r24	; 0x03
+			*Copy_u8PtrToVal = GET_BIT(*DIO_u8PINArr[Local_u8PortNum], Local_u8PinNum);
+ 276:	8a 81       	ldd	r24, Y+2	; 0x02
+ 278:	88 2f       	mov	r24, r24
+ 27a:	90 e0       	ldi	r25, 0x00	; 0
+ 27c:	88 0f       	add	r24, r24
+ 27e:	99 1f       	adc	r25, r25
+ 280:	fc 01       	movw	r30, r24
+ 282:	e5 58       	subi	r30, 0x85	; 133
+ 284:	ff 4f       	sbci	r31, 0xFF	; 255
+ 286:	01 90       	ld	r0, Z+
+ 288:	f0 81       	ld	r31, Z
+ 28a:	e0 2d       	mov	r30, r0
+ 28c:	80 81       	ld	r24, Z
+ 28e:	28 2f       	mov	r18, r24
+ 290:	30 e0       	ldi	r19, 0x00	; 0
+ 292:	89 81       	ldd	r24, Y+1	; 0x01
+ 294:	88 2f       	mov	r24, r24
+ 296:	90 e0       	ldi	r25, 0x00	; 0
+ 298:	a9 01       	movw	r20, r18
+ 29a:	02 c0       	rjmp	.+4      	; 0x2a0 <DIO_u8ReadPinVal+0x5c>
+ 29c:	55 95       	asr	r21
+ 29e:	47 95       	ror	r20
+ 2a0:	8a 95       	dec	r24
+ 2a2:	e2 f7       	brpl	.-8      	; 0x29c <DIO_u8ReadPinVal+0x58>
+ 2a4:	ca 01       	movw	r24, r20
+ 2a6:	81 70       	andi	r24, 0x01	; 1
+ 2a8:	ed 81       	ldd	r30, Y+5	; 0x05
+ 2aa:	fe 81       	ldd	r31, Y+6	; 0x06
+ 2ac:	80 83       	st	Z, r24
+		}
+	return Local_u8State;
+ 2ae:	8b 81       	ldd	r24, Y+3	; 0x03
+}
+ 2b0:	26 96       	adiw	r28, 0x06	; 6
+ 2b2:	0f b6       	in	r0, 0x3f	; 63
+ 2b4:	f8 94       	cli
+ 2b6:	de bf       	out	0x3e, r29	; 62
+ 2b8:	0f be       	out	0x3f, r0	; 63
+ 2ba:	cd bf       	out	0x3d, r28	; 61
+ 2bc:	cf 91       	pop	r28
+ 2be:	df 91       	pop	r29
+ 2c0:	08 95       	ret
+
+000002c2 <DIO_u8WritePinVal>:
+
+/* Comment!: Write Pin Value */
+
+extern u8 DIO_u8WritePinVal(u8 Copy_u8PinIdx,u8 Copy_u8PinVal)
+{
+ 2c2:	df 93       	push	r29
+ 2c4:	cf 93       	push	r28
+ 2c6:	00 d0       	rcall	.+0      	; 0x2c8 <DIO_u8WritePinVal+0x6>
+ 2c8:	00 d0       	rcall	.+0      	; 0x2ca <DIO_u8WritePinVal+0x8>
+ 2ca:	0f 92       	push	r0
+ 2cc:	cd b7       	in	r28, 0x3d	; 61
+ 2ce:	de b7       	in	r29, 0x3e	; 62
+ 2d0:	8c 83       	std	Y+4, r24	; 0x04
+ 2d2:	6d 83       	std	Y+5, r22	; 0x05
+	u8 Local_u8State;
+	u8 Local_u8PortNum = Copy_u8PinIdx / NUMBER_OF_PINS_PORT;
+ 2d4:	8c 81       	ldd	r24, Y+4	; 0x04
+ 2d6:	86 95       	lsr	r24
+ 2d8:	86 95       	lsr	r24
+ 2da:	86 95       	lsr	r24
+ 2dc:	8a 83       	std	Y+2, r24	; 0x02
+	u8 Local_u8PinNum = Copy_u8PinIdx % NUMBER_OF_PINS_PORT;
+ 2de:	8c 81       	ldd	r24, Y+4	; 0x04
+ 2e0:	87 70       	andi	r24, 0x07	; 7
+ 2e2:	89 83       	std	Y+1, r24	; 0x01
+	if(Copy_u8PinIdx >NUMBER_OF_PINS)
+ 2e4:	8c 81       	ldd	r24, Y+4	; 0x04
+ 2e6:	80 32       	cpi	r24, 0x20	; 32
+ 2e8:	10 f0       	brcs	.+4      	; 0x2ee <DIO_u8WritePinVal+0x2c>
+			{
+			    Local_u8State= u8ERROR;
+ 2ea:	1b 82       	std	Y+3, r1	; 0x03
+ 2ec:	69 c0       	rjmp	.+210    	; 0x3c0 <DIO_u8WritePinVal+0xfe>
+			}
+			else
+			{
+				if(Copy_u8PinVal)
+ 2ee:	8d 81       	ldd	r24, Y+5	; 0x05
+ 2f0:	88 23       	and	r24, r24
+ 2f2:	91 f1       	breq	.+100    	; 0x358 <DIO_u8WritePinVal+0x96>
+				{
+			    *DIO_u8PORTArr[Local_u8PortNum]=SET_BIT(*DIO_u8PORTArr[Local_u8PortNum],Local_u8PinNum);
+ 2f4:	8a 81       	ldd	r24, Y+2	; 0x02
+ 2f6:	88 2f       	mov	r24, r24
+ 2f8:	90 e0       	ldi	r25, 0x00	; 0
+ 2fa:	88 0f       	add	r24, r24
+ 2fc:	99 1f       	adc	r25, r25
+ 2fe:	fc 01       	movw	r30, r24
+ 300:	ed 58       	subi	r30, 0x8D	; 141
+ 302:	ff 4f       	sbci	r31, 0xFF	; 255
+ 304:	60 81       	ld	r22, Z
+ 306:	71 81       	ldd	r23, Z+1	; 0x01
+ 308:	8a 81       	ldd	r24, Y+2	; 0x02
+ 30a:	88 2f       	mov	r24, r24
+ 30c:	90 e0       	ldi	r25, 0x00	; 0
+ 30e:	88 0f       	add	r24, r24
+ 310:	99 1f       	adc	r25, r25
+ 312:	fc 01       	movw	r30, r24
+ 314:	ed 58       	subi	r30, 0x8D	; 141
+ 316:	ff 4f       	sbci	r31, 0xFF	; 255
+ 318:	a0 81       	ld	r26, Z
+ 31a:	b1 81       	ldd	r27, Z+1	; 0x01
+ 31c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 31e:	88 2f       	mov	r24, r24
+ 320:	90 e0       	ldi	r25, 0x00	; 0
+ 322:	88 0f       	add	r24, r24
+ 324:	99 1f       	adc	r25, r25
+ 326:	fc 01       	movw	r30, r24
+ 328:	ed 58       	subi	r30, 0x8D	; 141
+ 32a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 32c:	01 90       	ld	r0, Z+
+ 32e:	f0 81       	ld	r31, Z
+ 330:	e0 2d       	mov	r30, r0
+ 332:	80 81       	ld	r24, Z
+ 334:	48 2f       	mov	r20, r24
+ 336:	89 81       	ldd	r24, Y+1	; 0x01
+ 338:	28 2f       	mov	r18, r24
+ 33a:	30 e0       	ldi	r19, 0x00	; 0
+ 33c:	81 e0       	ldi	r24, 0x01	; 1
+ 33e:	90 e0       	ldi	r25, 0x00	; 0
+ 340:	02 2e       	mov	r0, r18
+ 342:	02 c0       	rjmp	.+4      	; 0x348 <DIO_u8WritePinVal+0x86>
+ 344:	88 0f       	add	r24, r24
+ 346:	99 1f       	adc	r25, r25
+ 348:	0a 94       	dec	r0
+ 34a:	e2 f7       	brpl	.-8      	; 0x344 <DIO_u8WritePinVal+0x82>
+ 34c:	84 2b       	or	r24, r20
+ 34e:	8c 93       	st	X, r24
+ 350:	8c 91       	ld	r24, X
+ 352:	fb 01       	movw	r30, r22
+ 354:	80 83       	st	Z, r24
+ 356:	32 c0       	rjmp	.+100    	; 0x3bc <DIO_u8WritePinVal+0xfa>
+				}
+				else
+				{
+				    *DIO_u8PORTArr[Local_u8PortNum]=CLR_BIT(*DIO_u8PORTArr[Local_u8PortNum],Local_u8PinNum);
+ 358:	8a 81       	ldd	r24, Y+2	; 0x02
+ 35a:	88 2f       	mov	r24, r24
+ 35c:	90 e0       	ldi	r25, 0x00	; 0
+ 35e:	88 0f       	add	r24, r24
+ 360:	99 1f       	adc	r25, r25
+ 362:	fc 01       	movw	r30, r24
+ 364:	ed 58       	subi	r30, 0x8D	; 141
+ 366:	ff 4f       	sbci	r31, 0xFF	; 255
+ 368:	60 81       	ld	r22, Z
+ 36a:	71 81       	ldd	r23, Z+1	; 0x01
+ 36c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 36e:	88 2f       	mov	r24, r24
+ 370:	90 e0       	ldi	r25, 0x00	; 0
+ 372:	88 0f       	add	r24, r24
+ 374:	99 1f       	adc	r25, r25
+ 376:	fc 01       	movw	r30, r24
+ 378:	ed 58       	subi	r30, 0x8D	; 141
+ 37a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 37c:	a0 81       	ld	r26, Z
+ 37e:	b1 81       	ldd	r27, Z+1	; 0x01
+ 380:	8a 81       	ldd	r24, Y+2	; 0x02
+ 382:	88 2f       	mov	r24, r24
+ 384:	90 e0       	ldi	r25, 0x00	; 0
+ 386:	88 0f       	add	r24, r24
+ 388:	99 1f       	adc	r25, r25
+ 38a:	fc 01       	movw	r30, r24
+ 38c:	ed 58       	subi	r30, 0x8D	; 141
+ 38e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 390:	01 90       	ld	r0, Z+
+ 392:	f0 81       	ld	r31, Z
+ 394:	e0 2d       	mov	r30, r0
+ 396:	80 81       	ld	r24, Z
+ 398:	48 2f       	mov	r20, r24
+ 39a:	89 81       	ldd	r24, Y+1	; 0x01
+ 39c:	28 2f       	mov	r18, r24
+ 39e:	30 e0       	ldi	r19, 0x00	; 0
+ 3a0:	81 e0       	ldi	r24, 0x01	; 1
+ 3a2:	90 e0       	ldi	r25, 0x00	; 0
+ 3a4:	02 2e       	mov	r0, r18
+ 3a6:	02 c0       	rjmp	.+4      	; 0x3ac <DIO_u8WritePinVal+0xea>
+ 3a8:	88 0f       	add	r24, r24
+ 3aa:	99 1f       	adc	r25, r25
+ 3ac:	0a 94       	dec	r0
+ 3ae:	e2 f7       	brpl	.-8      	; 0x3a8 <DIO_u8WritePinVal+0xe6>
+ 3b0:	80 95       	com	r24
+ 3b2:	84 23       	and	r24, r20
+ 3b4:	8c 93       	st	X, r24
+ 3b6:	8c 91       	ld	r24, X
+ 3b8:	fb 01       	movw	r30, r22
+ 3ba:	80 83       	st	Z, r24
+
+				}
+				Local_u8State = u8OK;
+ 3bc:	81 e0       	ldi	r24, 0x01	; 1
+ 3be:	8b 83       	std	Y+3, r24	; 0x03
+
+				}
+		return Local_u8State;
+ 3c0:	8b 81       	ldd	r24, Y+3	; 0x03
+
+}
+ 3c2:	0f 90       	pop	r0
+ 3c4:	0f 90       	pop	r0
+ 3c6:	0f 90       	pop	r0
+ 3c8:	0f 90       	pop	r0
+ 3ca:	0f 90       	pop	r0
+ 3cc:	cf 91       	pop	r28
+ 3ce:	df 91       	pop	r29
+ 3d0:	08 95       	ret
+
+000003d2 <DIO_u8WritePinDir>:
+/* Comment!: Write Pin Direction */
+extern u8 DIO_u8WritePinDir(u8 Copy_u8PinIdx,u8 Copy_u8PinDir)
+{
+ 3d2:	df 93       	push	r29
+ 3d4:	cf 93       	push	r28
+ 3d6:	00 d0       	rcall	.+0      	; 0x3d8 <DIO_u8WritePinDir+0x6>
+ 3d8:	00 d0       	rcall	.+0      	; 0x3da <DIO_u8WritePinDir+0x8>
+ 3da:	0f 92       	push	r0
+ 3dc:	cd b7       	in	r28, 0x3d	; 61
+ 3de:	de b7       	in	r29, 0x3e	; 62
+ 3e0:	8c 83       	std	Y+4, r24	; 0x04
+ 3e2:	6d 83       	std	Y+5, r22	; 0x05
+	u8 Local_u8State;
+	u8 Local_u8PortNum = Copy_u8PinIdx / NUMBER_OF_PINS_PORT;
+ 3e4:	8c 81       	ldd	r24, Y+4	; 0x04
+ 3e6:	86 95       	lsr	r24
+ 3e8:	86 95       	lsr	r24
+ 3ea:	86 95       	lsr	r24
+ 3ec:	8a 83       	std	Y+2, r24	; 0x02
+	u8 Local_u8PinNum = Copy_u8PinIdx % NUMBER_OF_PINS_PORT;
+ 3ee:	8c 81       	ldd	r24, Y+4	; 0x04
+ 3f0:	87 70       	andi	r24, 0x07	; 7
+ 3f2:	89 83       	std	Y+1, r24	; 0x01
+	if(Copy_u8PinIdx >NUMBER_OF_PINS)
+ 3f4:	8c 81       	ldd	r24, Y+4	; 0x04
+ 3f6:	80 32       	cpi	r24, 0x20	; 32
+ 3f8:	10 f0       	brcs	.+4      	; 0x3fe <DIO_u8WritePinDir+0x2c>
+			{
+			Local_u8State= u8ERROR;
+ 3fa:	1b 82       	std	Y+3, r1	; 0x03
+ 3fc:	69 c0       	rjmp	.+210    	; 0x4d0 <DIO_u8WritePinDir+0xfe>
+			}
+			else
+			{
+				if(Copy_u8PinDir)
+ 3fe:	8d 81       	ldd	r24, Y+5	; 0x05
+ 400:	88 23       	and	r24, r24
+ 402:	91 f1       	breq	.+100    	; 0x468 <DIO_u8WritePinDir+0x96>
+				{
+				*DIO_u8DDRArr[Local_u8PortNum]= SET_BIT(*DIO_u8DDRArr[Local_u8PortNum],Local_u8PinNum);
+ 404:	8a 81       	ldd	r24, Y+2	; 0x02
+ 406:	88 2f       	mov	r24, r24
+ 408:	90 e0       	ldi	r25, 0x00	; 0
+ 40a:	88 0f       	add	r24, r24
+ 40c:	99 1f       	adc	r25, r25
+ 40e:	fc 01       	movw	r30, r24
+ 410:	ed 57       	subi	r30, 0x7D	; 125
+ 412:	ff 4f       	sbci	r31, 0xFF	; 255
+ 414:	60 81       	ld	r22, Z
+ 416:	71 81       	ldd	r23, Z+1	; 0x01
+ 418:	8a 81       	ldd	r24, Y+2	; 0x02
+ 41a:	88 2f       	mov	r24, r24
+ 41c:	90 e0       	ldi	r25, 0x00	; 0
+ 41e:	88 0f       	add	r24, r24
+ 420:	99 1f       	adc	r25, r25
+ 422:	fc 01       	movw	r30, r24
+ 424:	ed 57       	subi	r30, 0x7D	; 125
+ 426:	ff 4f       	sbci	r31, 0xFF	; 255
+ 428:	a0 81       	ld	r26, Z
+ 42a:	b1 81       	ldd	r27, Z+1	; 0x01
+ 42c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 42e:	88 2f       	mov	r24, r24
+ 430:	90 e0       	ldi	r25, 0x00	; 0
+ 432:	88 0f       	add	r24, r24
+ 434:	99 1f       	adc	r25, r25
+ 436:	fc 01       	movw	r30, r24
+ 438:	ed 57       	subi	r30, 0x7D	; 125
+ 43a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 43c:	01 90       	ld	r0, Z+
+ 43e:	f0 81       	ld	r31, Z
+ 440:	e0 2d       	mov	r30, r0
+ 442:	80 81       	ld	r24, Z
+ 444:	48 2f       	mov	r20, r24
+ 446:	89 81       	ldd	r24, Y+1	; 0x01
+ 448:	28 2f       	mov	r18, r24
+ 44a:	30 e0       	ldi	r19, 0x00	; 0
+ 44c:	81 e0       	ldi	r24, 0x01	; 1
+ 44e:	90 e0       	ldi	r25, 0x00	; 0
+ 450:	02 2e       	mov	r0, r18
+ 452:	02 c0       	rjmp	.+4      	; 0x458 <DIO_u8WritePinDir+0x86>
+ 454:	88 0f       	add	r24, r24
+ 456:	99 1f       	adc	r25, r25
+ 458:	0a 94       	dec	r0
+ 45a:	e2 f7       	brpl	.-8      	; 0x454 <DIO_u8WritePinDir+0x82>
+ 45c:	84 2b       	or	r24, r20
+ 45e:	8c 93       	st	X, r24
+ 460:	8c 91       	ld	r24, X
+ 462:	fb 01       	movw	r30, r22
+ 464:	80 83       	st	Z, r24
+ 466:	32 c0       	rjmp	.+100    	; 0x4cc <DIO_u8WritePinDir+0xfa>
+				}
+				else
+				{
+					*DIO_u8DDRArr[Local_u8PortNum]= CLR_BIT(*DIO_u8DDRArr[Local_u8PortNum],Local_u8PinNum);
+ 468:	8a 81       	ldd	r24, Y+2	; 0x02
+ 46a:	88 2f       	mov	r24, r24
+ 46c:	90 e0       	ldi	r25, 0x00	; 0
+ 46e:	88 0f       	add	r24, r24
+ 470:	99 1f       	adc	r25, r25
+ 472:	fc 01       	movw	r30, r24
+ 474:	ed 57       	subi	r30, 0x7D	; 125
+ 476:	ff 4f       	sbci	r31, 0xFF	; 255
+ 478:	60 81       	ld	r22, Z
+ 47a:	71 81       	ldd	r23, Z+1	; 0x01
+ 47c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 47e:	88 2f       	mov	r24, r24
+ 480:	90 e0       	ldi	r25, 0x00	; 0
+ 482:	88 0f       	add	r24, r24
+ 484:	99 1f       	adc	r25, r25
+ 486:	fc 01       	movw	r30, r24
+ 488:	ed 57       	subi	r30, 0x7D	; 125
+ 48a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 48c:	a0 81       	ld	r26, Z
+ 48e:	b1 81       	ldd	r27, Z+1	; 0x01
+ 490:	8a 81       	ldd	r24, Y+2	; 0x02
+ 492:	88 2f       	mov	r24, r24
+ 494:	90 e0       	ldi	r25, 0x00	; 0
+ 496:	88 0f       	add	r24, r24
+ 498:	99 1f       	adc	r25, r25
+ 49a:	fc 01       	movw	r30, r24
+ 49c:	ed 57       	subi	r30, 0x7D	; 125
+ 49e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 4a0:	01 90       	ld	r0, Z+
+ 4a2:	f0 81       	ld	r31, Z
+ 4a4:	e0 2d       	mov	r30, r0
+ 4a6:	80 81       	ld	r24, Z
+ 4a8:	48 2f       	mov	r20, r24
+ 4aa:	89 81       	ldd	r24, Y+1	; 0x01
+ 4ac:	28 2f       	mov	r18, r24
+ 4ae:	30 e0       	ldi	r19, 0x00	; 0
+ 4b0:	81 e0       	ldi	r24, 0x01	; 1
+ 4b2:	90 e0       	ldi	r25, 0x00	; 0
+ 4b4:	02 2e       	mov	r0, r18
+ 4b6:	02 c0       	rjmp	.+4      	; 0x4bc <DIO_u8WritePinDir+0xea>
+ 4b8:	88 0f       	add	r24, r24
+ 4ba:	99 1f       	adc	r25, r25
+ 4bc:	0a 94       	dec	r0
+ 4be:	e2 f7       	brpl	.-8      	; 0x4b8 <DIO_u8WritePinDir+0xe6>
+ 4c0:	80 95       	com	r24
+ 4c2:	84 23       	and	r24, r20
+ 4c4:	8c 93       	st	X, r24
+ 4c6:	8c 91       	ld	r24, X
+ 4c8:	fb 01       	movw	r30, r22
+ 4ca:	80 83       	st	Z, r24
+
+				}
+				Local_u8State = u8OK;
+ 4cc:	81 e0       	ldi	r24, 0x01	; 1
+ 4ce:	8b 83       	std	Y+3, r24	; 0x03
+
+				}
+		return Local_u8State;
+ 4d0:	8b 81       	ldd	r24, Y+3	; 0x03
+}
+ 4d2:	0f 90       	pop	r0
+ 4d4:	0f 90       	pop	r0
+ 4d6:	0f 90       	pop	r0
+ 4d8:	0f 90       	pop	r0
+ 4da:	0f 90       	pop	r0
+ 4dc:	cf 91       	pop	r28
+ 4de:	df 91       	pop	r29
+ 4e0:	08 95       	ret
+
+000004e2 <DIO_u8ReadPinDir>:
+
+/* Comment!: Read Pin Direction  */
+extern u8 DIO_u8ReadPinDir(u8 Copy_u8PinIdx,u8* Copy_u8PtrToDir)
+{
+ 4e2:	df 93       	push	r29
+ 4e4:	cf 93       	push	r28
+ 4e6:	00 d0       	rcall	.+0      	; 0x4e8 <DIO_u8ReadPinDir+0x6>
+ 4e8:	00 d0       	rcall	.+0      	; 0x4ea <DIO_u8ReadPinDir+0x8>
+ 4ea:	00 d0       	rcall	.+0      	; 0x4ec <DIO_u8ReadPinDir+0xa>
+ 4ec:	cd b7       	in	r28, 0x3d	; 61
+ 4ee:	de b7       	in	r29, 0x3e	; 62
+ 4f0:	8c 83       	std	Y+4, r24	; 0x04
+ 4f2:	7e 83       	std	Y+6, r23	; 0x06
+ 4f4:	6d 83       	std	Y+5, r22	; 0x05
+	u8 Local_u8State;
+	u8 Local_u8PortNum = Copy_u8PinIdx / NUMBER_OF_PINS_PORT;
+ 4f6:	8c 81       	ldd	r24, Y+4	; 0x04
+ 4f8:	86 95       	lsr	r24
+ 4fa:	86 95       	lsr	r24
+ 4fc:	86 95       	lsr	r24
+ 4fe:	8a 83       	std	Y+2, r24	; 0x02
+	u8 Local_u8PinNum = Copy_u8PinIdx % NUMBER_OF_PINS_PORT;
+ 500:	8c 81       	ldd	r24, Y+4	; 0x04
+ 502:	87 70       	andi	r24, 0x07	; 7
+ 504:	89 83       	std	Y+1, r24	; 0x01
+	if(Copy_u8PinIdx >NUMBER_OF_PINS)
+ 506:	8c 81       	ldd	r24, Y+4	; 0x04
+ 508:	80 32       	cpi	r24, 0x20	; 32
+ 50a:	10 f0       	brcs	.+4      	; 0x510 <DIO_u8ReadPinDir+0x2e>
+	{
+			Local_u8State= u8ERROR;
+ 50c:	1b 82       	std	Y+3, r1	; 0x03
+ 50e:	1e c0       	rjmp	.+60     	; 0x54c <DIO_u8ReadPinDir+0x6a>
+	}
+			else
+			{
+				Local_u8State = u8OK;
+ 510:	81 e0       	ldi	r24, 0x01	; 1
+ 512:	8b 83       	std	Y+3, r24	; 0x03
+				*Copy_u8PtrToDir = GET_BIT(*DIO_u8DDRArr[Local_u8PortNum], Local_u8PinNum);
+ 514:	8a 81       	ldd	r24, Y+2	; 0x02
+ 516:	88 2f       	mov	r24, r24
+ 518:	90 e0       	ldi	r25, 0x00	; 0
+ 51a:	88 0f       	add	r24, r24
+ 51c:	99 1f       	adc	r25, r25
+ 51e:	fc 01       	movw	r30, r24
+ 520:	ed 57       	subi	r30, 0x7D	; 125
+ 522:	ff 4f       	sbci	r31, 0xFF	; 255
+ 524:	01 90       	ld	r0, Z+
+ 526:	f0 81       	ld	r31, Z
+ 528:	e0 2d       	mov	r30, r0
+ 52a:	80 81       	ld	r24, Z
+ 52c:	28 2f       	mov	r18, r24
+ 52e:	30 e0       	ldi	r19, 0x00	; 0
+ 530:	89 81       	ldd	r24, Y+1	; 0x01
+ 532:	88 2f       	mov	r24, r24
+ 534:	90 e0       	ldi	r25, 0x00	; 0
+ 536:	a9 01       	movw	r20, r18
+ 538:	02 c0       	rjmp	.+4      	; 0x53e <DIO_u8ReadPinDir+0x5c>
+ 53a:	55 95       	asr	r21
+ 53c:	47 95       	ror	r20
+ 53e:	8a 95       	dec	r24
+ 540:	e2 f7       	brpl	.-8      	; 0x53a <DIO_u8ReadPinDir+0x58>
+ 542:	ca 01       	movw	r24, r20
+ 544:	81 70       	andi	r24, 0x01	; 1
+ 546:	ed 81       	ldd	r30, Y+5	; 0x05
+ 548:	fe 81       	ldd	r31, Y+6	; 0x06
+ 54a:	80 83       	st	Z, r24
+			}
+
+		return Local_u8State;
+ 54c:	8b 81       	ldd	r24, Y+3	; 0x03
+}
+ 54e:	26 96       	adiw	r28, 0x06	; 6
+ 550:	0f b6       	in	r0, 0x3f	; 63
+ 552:	f8 94       	cli
+ 554:	de bf       	out	0x3e, r29	; 62
+ 556:	0f be       	out	0x3f, r0	; 63
+ 558:	cd bf       	out	0x3d, r28	; 61
+ 55a:	cf 91       	pop	r28
+ 55c:	df 91       	pop	r29
+ 55e:	08 95       	ret
+
+00000560 <DIO_voidInit>:
+
+
+/* Comment!: Initialization Function */
+extern void DIO_voidInit(void) {
+ 560:	df 93       	push	r29
+ 562:	cf 93       	push	r28
+ 564:	cd b7       	in	r28, 0x3d	; 61
+ 566:	de b7       	in	r29, 0x3e	; 62
+
+	// Setting ports as input
+	*DIO_u8DDRArr[DIO_u8PORT0] = DIO_u8PORTA_DIR;
+ 568:	e0 91 83 00 	lds	r30, 0x0083
+ 56c:	f0 91 84 00 	lds	r31, 0x0084
+ 570:	10 82       	st	Z, r1
+	*DIO_u8DDRArr[DIO_u8PORT1] = DIO_u8PORTB_DIR;
+ 572:	e0 91 85 00 	lds	r30, 0x0085
+ 576:	f0 91 86 00 	lds	r31, 0x0086
+ 57a:	88 e0       	ldi	r24, 0x08	; 8
+ 57c:	80 83       	st	Z, r24
+	*DIO_u8DDRArr[DIO_u8PORT2] = DIO_u8PORTC_DIR;
+ 57e:	e0 91 87 00 	lds	r30, 0x0087
+ 582:	f0 91 88 00 	lds	r31, 0x0088
+ 586:	10 82       	st	Z, r1
+	*DIO_u8DDRArr[DIO_u8PORT3] = DIO_u8PORTD_DIR;
+ 588:	e0 91 89 00 	lds	r30, 0x0089
+ 58c:	f0 91 8a 00 	lds	r31, 0x008A
+ 590:	10 82       	st	Z, r1
+
+	//output configuration
+	/* OUTPUT=((D'PORT)+(DV)) */
+
+
+	*DIO_u8PORTArr[DIO_u8PORT0]=((~DIO_u8PORTA_DIR & *DIO_u8PORTArr[DIO_u8PORT0]) | (DIO_u8PORTA_DIR & DIO_u8PORTA_VAL));
+ 592:	a0 91 73 00 	lds	r26, 0x0073
+ 596:	b0 91 74 00 	lds	r27, 0x0074
+ 59a:	e0 91 73 00 	lds	r30, 0x0073
+ 59e:	f0 91 74 00 	lds	r31, 0x0074
+ 5a2:	80 81       	ld	r24, Z
+ 5a4:	8c 93       	st	X, r24
+	*DIO_u8PORTArr[DIO_u8PORT1]=((~DIO_u8PORTB_DIR & *DIO_u8PORTArr[DIO_u8PORT1]) | (DIO_u8PORTB_DIR & DIO_u8PORTB_VAL));
+ 5a6:	a0 91 75 00 	lds	r26, 0x0075
+ 5aa:	b0 91 76 00 	lds	r27, 0x0076
+ 5ae:	e0 91 75 00 	lds	r30, 0x0075
+ 5b2:	f0 91 76 00 	lds	r31, 0x0076
+ 5b6:	80 81       	ld	r24, Z
+ 5b8:	87 7f       	andi	r24, 0xF7	; 247
+ 5ba:	8c 93       	st	X, r24
+	*DIO_u8PORTArr[DIO_u8PORT2]=((~DIO_u8PORTC_DIR & *DIO_u8PORTArr[DIO_u8PORT2]) | (DIO_u8PORTC_DIR & DIO_u8PORTC_VAL));
+ 5bc:	a0 91 77 00 	lds	r26, 0x0077
+ 5c0:	b0 91 78 00 	lds	r27, 0x0078
+ 5c4:	e0 91 77 00 	lds	r30, 0x0077
+ 5c8:	f0 91 78 00 	lds	r31, 0x0078
+ 5cc:	80 81       	ld	r24, Z
+ 5ce:	8c 93       	st	X, r24
+	*DIO_u8PORTArr[DIO_u8PORT3]=((~DIO_u8PORTD_DIR & *DIO_u8PORTArr[DIO_u8PORT3]) | (DIO_u8PORTD_DIR & DIO_u8PORTD_VAL));
+ 5d0:	a0 91 79 00 	lds	r26, 0x0079
+ 5d4:	b0 91 7a 00 	lds	r27, 0x007A
+ 5d8:	e0 91 79 00 	lds	r30, 0x0079
+ 5dc:	f0 91 7a 00 	lds	r31, 0x007A
+ 5e0:	80 81       	ld	r24, Z
+ 5e2:	8c 93       	st	X, r24
+
+
+}
+ 5e4:	cf 91       	pop	r28
+ 5e6:	df 91       	pop	r29
+ 5e8:	08 95       	ret
+
+000005ea <main>:
+#define ON 1
+
+
+
+ int main(void)
+ {
+ 5ea:	df 93       	push	r29
+ 5ec:	cf 93       	push	r28
+ 5ee:	cd b7       	in	r28, 0x3d	; 61
+ 5f0:	de b7       	in	r29, 0x3e	; 62
+ 5f2:	29 97       	sbiw	r28, 0x09	; 9
+ 5f4:	0f b6       	in	r0, 0x3f	; 63
+ 5f6:	f8 94       	cli
+ 5f8:	de bf       	out	0x3e, r29	; 62
+ 5fa:	0f be       	out	0x3f, r0	; 63
+ 5fc:	cd bf       	out	0x3d, r28	; 61
+
+
+
+
+u8 Local_u8SwCounter= 0;
+ 5fe:	1c 82       	std	Y+4, r1	; 0x04
+u8 Local_u8Sw1Value,Local_u8Sw2Value,Flag1= FALSE,Flag2 = FALSE,State=0;
+ 600:	1b 82       	std	Y+3, r1	; 0x03
+ 602:	1a 82       	std	Y+2, r1	; 0x02
+ 604:	19 82       	std	Y+1, r1	; 0x01
+DIO_voidInit();
+ 606:	0e 94 b0 02 	call	0x560	; 0x560 <DIO_voidInit>
+TACTILE_voidInit();
+ 60a:	0e 94 96 03 	call	0x72c	; 0x72c <TACTILE_voidInit>
+PWM_init();
+ 60e:	0e 94 77 03 	call	0x6ee	; 0x6ee <PWM_init>
+DCMotor_voidInit();
+ 612:	0e 94 49 00 	call	0x92	; 0x92 <DCMotor_voidInit>
+
+
+ while(1)
+ {
+
+	 TACTILE_u8GetButtonState(SW2,&Local_u8Sw2Value);
+ 616:	9e 01       	movw	r18, r28
+ 618:	2a 5f       	subi	r18, 0xFA	; 250
+ 61a:	3f 4f       	sbci	r19, 0xFF	; 255
+ 61c:	82 e0       	ldi	r24, 0x02	; 2
+ 61e:	b9 01       	movw	r22, r18
+ 620:	0e 94 9d 03 	call	0x73a	; 0x73a <TACTILE_u8GetButtonState>
+	 if(Local_u8Sw2Value == PRESSED && Flag2 == FALSE)
+ 624:	8e 81       	ldd	r24, Y+6	; 0x06
+ 626:	81 30       	cpi	r24, 0x01	; 1
+ 628:	71 f4       	brne	.+28     	; 0x646 <main+0x5c>
+ 62a:	8a 81       	ldd	r24, Y+2	; 0x02
+ 62c:	88 23       	and	r24, r24
+ 62e:	59 f4       	brne	.+22     	; 0x646 <main+0x5c>
+	 {
+		 Flag2 = TRUE;
+ 630:	81 e0       	ldi	r24, 0x01	; 1
+ 632:	8a 83       	std	Y+2, r24	; 0x02
+		 State = ! State;
+ 634:	19 86       	std	Y+9, r1	; 0x09
+ 636:	89 81       	ldd	r24, Y+1	; 0x01
+ 638:	88 23       	and	r24, r24
+ 63a:	11 f4       	brne	.+4      	; 0x640 <main+0x56>
+ 63c:	21 e0       	ldi	r18, 0x01	; 1
+ 63e:	29 87       	std	Y+9, r18	; 0x09
+ 640:	39 85       	ldd	r19, Y+9	; 0x09
+ 642:	39 83       	std	Y+1, r19	; 0x01
+ 644:	04 c0       	rjmp	.+8      	; 0x64e <main+0x64>
+	 }
+	 else if(Local_u8Sw2Value == RELEASED)
+ 646:	8e 81       	ldd	r24, Y+6	; 0x06
+ 648:	88 23       	and	r24, r24
+ 64a:	09 f4       	brne	.+2      	; 0x64e <main+0x64>
+	 	 {
+	 		 Flag2 = FALSE;
+ 64c:	1a 82       	std	Y+2, r1	; 0x02
+	 	 }
+	 if(State == ON)
+ 64e:	89 81       	ldd	r24, Y+1	; 0x01
+ 650:	81 30       	cpi	r24, 0x01	; 1
+ 652:	09 f0       	breq	.+2      	; 0x656 <main+0x6c>
+ 654:	49 c0       	rjmp	.+146    	; 0x6e8 <main+0xfe>
+	 {
+	 TACTILE_u8GetButtonState(SW1,&Local_u8Sw1Value);
+ 656:	9e 01       	movw	r18, r28
+ 658:	2b 5f       	subi	r18, 0xFB	; 251
+ 65a:	3f 4f       	sbci	r19, 0xFF	; 255
+ 65c:	81 e0       	ldi	r24, 0x01	; 1
+ 65e:	b9 01       	movw	r22, r18
+ 660:	0e 94 9d 03 	call	0x73a	; 0x73a <TACTILE_u8GetButtonState>
+		 if(Local_u8Sw1Value == PRESSED && Flag1 == FALSE)
+ 664:	8d 81       	ldd	r24, Y+5	; 0x05
+ 666:	81 30       	cpi	r24, 0x01	; 1
+ 668:	69 f4       	brne	.+26     	; 0x684 <main+0x9a>
+ 66a:	8b 81       	ldd	r24, Y+3	; 0x03
+ 66c:	88 23       	and	r24, r24
+ 66e:	51 f4       	brne	.+20     	; 0x684 <main+0x9a>
+		 {
+			 Flag1 = TRUE;
+ 670:	81 e0       	ldi	r24, 0x01	; 1
+ 672:	8b 83       	std	Y+3, r24	; 0x03
+
+			 Local_u8SwCounter++;
+ 674:	8c 81       	ldd	r24, Y+4	; 0x04
+ 676:	8f 5f       	subi	r24, 0xFF	; 255
+ 678:	8c 83       	std	Y+4, r24	; 0x04
+			 if(Local_u8SwCounter == 4)
+ 67a:	8c 81       	ldd	r24, Y+4	; 0x04
+ 67c:	84 30       	cpi	r24, 0x04	; 4
+ 67e:	31 f4       	brne	.+12     	; 0x68c <main+0xa2>
+			 {
+				 Local_u8SwCounter=0;
+ 680:	1c 82       	std	Y+4, r1	; 0x04
+ 682:	04 c0       	rjmp	.+8      	; 0x68c <main+0xa2>
+
+			 }
+		 }
+		 else if(Local_u8Sw1Value == RELEASED)
+ 684:	8d 81       	ldd	r24, Y+5	; 0x05
+ 686:	88 23       	and	r24, r24
+ 688:	09 f4       	brne	.+2      	; 0x68c <main+0xa2>
+		 {
+			 Flag1 = FALSE;
+ 68a:	1b 82       	std	Y+3, r1	; 0x03
+
+		 }
+		 switch(Local_u8SwCounter)
+ 68c:	8c 81       	ldd	r24, Y+4	; 0x04
+ 68e:	28 2f       	mov	r18, r24
+ 690:	30 e0       	ldi	r19, 0x00	; 0
+ 692:	38 87       	std	Y+8, r19	; 0x08
+ 694:	2f 83       	std	Y+7, r18	; 0x07
+ 696:	8f 81       	ldd	r24, Y+7	; 0x07
+ 698:	98 85       	ldd	r25, Y+8	; 0x08
+ 69a:	81 30       	cpi	r24, 0x01	; 1
+ 69c:	91 05       	cpc	r25, r1
+ 69e:	c1 f0       	breq	.+48     	; 0x6d0 <main+0xe6>
+ 6a0:	2f 81       	ldd	r18, Y+7	; 0x07
+ 6a2:	38 85       	ldd	r19, Y+8	; 0x08
+ 6a4:	22 30       	cpi	r18, 0x02	; 2
+ 6a6:	31 05       	cpc	r19, r1
+ 6a8:	2c f4       	brge	.+10     	; 0x6b4 <main+0xca>
+ 6aa:	8f 81       	ldd	r24, Y+7	; 0x07
+ 6ac:	98 85       	ldd	r25, Y+8	; 0x08
+ 6ae:	00 97       	sbiw	r24, 0x00	; 0
+ 6b0:	61 f0       	breq	.+24     	; 0x6ca <main+0xe0>
+ 6b2:	b1 cf       	rjmp	.-158    	; 0x616 <main+0x2c>
+ 6b4:	2f 81       	ldd	r18, Y+7	; 0x07
+ 6b6:	38 85       	ldd	r19, Y+8	; 0x08
+ 6b8:	22 30       	cpi	r18, 0x02	; 2
+ 6ba:	31 05       	cpc	r19, r1
+ 6bc:	69 f0       	breq	.+26     	; 0x6d8 <main+0xee>
+ 6be:	8f 81       	ldd	r24, Y+7	; 0x07
+ 6c0:	98 85       	ldd	r25, Y+8	; 0x08
+ 6c2:	83 30       	cpi	r24, 0x03	; 3
+ 6c4:	91 05       	cpc	r25, r1
+ 6c6:	61 f0       	breq	.+24     	; 0x6e0 <main+0xf6>
+ 6c8:	a6 cf       	rjmp	.-180    	; 0x616 <main+0x2c>
+		 {
+		 case 0:
+			 DCMotor_voidOff();
+ 6ca:	0e 94 6d 00 	call	0xda	; 0xda <DCMotor_voidOff>
+ 6ce:	a3 cf       	rjmp	.-186    	; 0x616 <main+0x2c>
+			 break;
+		 case 1:
+			 DCMotor_voidChangeSpeed(0);
+ 6d0:	80 e0       	ldi	r24, 0x00	; 0
+ 6d2:	0e 94 77 00 	call	0xee	; 0xee <DCMotor_voidChangeSpeed>
+ 6d6:	9f cf       	rjmp	.-194    	; 0x616 <main+0x2c>
+			 break;
+		 case 2:
+			 DCMotor_voidChangeSpeed(1);
+ 6d8:	81 e0       	ldi	r24, 0x01	; 1
+ 6da:	0e 94 77 00 	call	0xee	; 0xee <DCMotor_voidChangeSpeed>
+ 6de:	9b cf       	rjmp	.-202    	; 0x616 <main+0x2c>
+
+					 break;
+		 case 3:
+			 DCMotor_voidChangeSpeed(2);
+ 6e0:	82 e0       	ldi	r24, 0x02	; 2
+ 6e2:	0e 94 77 00 	call	0xee	; 0xee <DCMotor_voidChangeSpeed>
+ 6e6:	97 cf       	rjmp	.-210    	; 0x616 <main+0x2c>
+		 }
+
+ }
+	 else
+	 {
+		 DCMotor_voidOff();
+ 6e8:	0e 94 6d 00 	call	0xda	; 0xda <DCMotor_voidOff>
+ 6ec:	94 cf       	rjmp	.-216    	; 0x616 <main+0x2c>
+
+000006ee <PWM_init>:
+#include "types.h"
+#include "PWM_private.h"
+#include "PWM_interface.h"
+// initialize PWM
+void PWM_init()
+{
+ 6ee:	df 93       	push	r29
+ 6f0:	cf 93       	push	r28
+ 6f2:	cd b7       	in	r28, 0x3d	; 61
+ 6f4:	de b7       	in	r29, 0x3e	; 62
+    // initialize timer0 in PWM mode
+    TCCR0 |= (1<<WGM00)|(1<<COM01)|(1<<WGM01)|(1<<CS00);
+ 6f6:	a3 e5       	ldi	r26, 0x53	; 83
+ 6f8:	b0 e0       	ldi	r27, 0x00	; 0
+ 6fa:	e3 e5       	ldi	r30, 0x53	; 83
+ 6fc:	f0 e0       	ldi	r31, 0x00	; 0
+ 6fe:	80 81       	ld	r24, Z
+ 700:	89 66       	ori	r24, 0x69	; 105
+ 702:	8c 93       	st	X, r24
+    // make sure to make OC0 pin (pin PB3 for atmega32) as output pin
+}
+ 704:	cf 91       	pop	r28
+ 706:	df 91       	pop	r29
+ 708:	08 95       	ret
+
+0000070a <PWM_Set_Duty_Cycle>:
+
+////////////
+//set duty cycle
+void PWM_Set_Duty_Cycle(u8 copy_u8Duty)
+{
+ 70a:	df 93       	push	r29
+ 70c:	cf 93       	push	r28
+ 70e:	00 d0       	rcall	.+0      	; 0x710 <PWM_Set_Duty_Cycle+0x6>
+ 710:	cd b7       	in	r28, 0x3d	; 61
+ 712:	de b7       	in	r29, 0x3e	; 62
+ 714:	8a 83       	std	Y+2, r24	; 0x02
+	u8 local_u8Duty= copy_u8Duty;
+ 716:	8a 81       	ldd	r24, Y+2	; 0x02
+ 718:	89 83       	std	Y+1, r24	; 0x01
+
+	OCR0=local_u8Duty;
+ 71a:	ec e5       	ldi	r30, 0x5C	; 92
+ 71c:	f0 e0       	ldi	r31, 0x00	; 0
+ 71e:	89 81       	ldd	r24, Y+1	; 0x01
+ 720:	80 83       	st	Z, r24
+}
+ 722:	0f 90       	pop	r0
+ 724:	0f 90       	pop	r0
+ 726:	cf 91       	pop	r28
+ 728:	df 91       	pop	r29
+ 72a:	08 95       	ret
+
+0000072c <TACTILE_voidInit>:
+static u8 ButtonVal=0;
+
+
+
+extern void TACTILE_voidInit()
+{}
+ 72c:	df 93       	push	r29
+ 72e:	cf 93       	push	r28
+ 730:	cd b7       	in	r28, 0x3d	; 61
+ 732:	de b7       	in	r29, 0x3e	; 62
+ 734:	cf 91       	pop	r28
+ 736:	df 91       	pop	r29
+ 738:	08 95       	ret
+
+0000073a <TACTILE_u8GetButtonState>:
+
+
+
+extern void TACTILE_u8GetButtonState(u8 Copy_u8ButtonIdx,u8 *Copy_u8ButtonVal)
+{
+ 73a:	df 93       	push	r29
+ 73c:	cf 93       	push	r28
+ 73e:	00 d0       	rcall	.+0      	; 0x740 <TACTILE_u8GetButtonState+0x6>
+ 740:	00 d0       	rcall	.+0      	; 0x742 <TACTILE_u8GetButtonState+0x8>
+ 742:	0f 92       	push	r0
+ 744:	cd b7       	in	r28, 0x3d	; 61
+ 746:	de b7       	in	r29, 0x3e	; 62
+ 748:	89 83       	std	Y+1, r24	; 0x01
+ 74a:	7b 83       	std	Y+3, r23	; 0x03
+ 74c:	6a 83       	std	Y+2, r22	; 0x02
+	DIO_u8ReadPinVal(SwitchPinArr[Copy_u8ButtonIdx-1],&ButtonVal);
+ 74e:	89 81       	ldd	r24, Y+1	; 0x01
+ 750:	88 2f       	mov	r24, r24
+ 752:	90 e0       	ldi	r25, 0x00	; 0
+ 754:	01 97       	sbiw	r24, 0x01	; 1
+ 756:	fc 01       	movw	r30, r24
+ 758:	e0 5a       	subi	r30, 0xA0	; 160
+ 75a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 75c:	80 81       	ld	r24, Z
+ 75e:	2d ec       	ldi	r18, 0xCD	; 205
+ 760:	30 e0       	ldi	r19, 0x00	; 0
+ 762:	b9 01       	movw	r22, r18
+ 764:	0e 94 22 01 	call	0x244	; 0x244 <DIO_u8ReadPinVal>
+	switch (ButtonsState[Copy_u8ButtonIdx-1])
+ 768:	89 81       	ldd	r24, Y+1	; 0x01
+ 76a:	88 2f       	mov	r24, r24
+ 76c:	90 e0       	ldi	r25, 0x00	; 0
+ 76e:	01 97       	sbiw	r24, 0x01	; 1
+ 770:	fc 01       	movw	r30, r24
+ 772:	e3 57       	subi	r30, 0x73	; 115
+ 774:	ff 4f       	sbci	r31, 0xFF	; 255
+ 776:	80 81       	ld	r24, Z
+ 778:	28 2f       	mov	r18, r24
+ 77a:	30 e0       	ldi	r19, 0x00	; 0
+ 77c:	3d 83       	std	Y+5, r19	; 0x05
+ 77e:	2c 83       	std	Y+4, r18	; 0x04
+ 780:	8c 81       	ldd	r24, Y+4	; 0x04
+ 782:	9d 81       	ldd	r25, Y+5	; 0x05
+ 784:	81 30       	cpi	r24, 0x01	; 1
+ 786:	91 05       	cpc	r25, r1
+ 788:	41 f1       	breq	.+80     	; 0x7da <TACTILE_u8GetButtonState+0xa0>
+ 78a:	2c 81       	ldd	r18, Y+4	; 0x04
+ 78c:	3d 81       	ldd	r19, Y+5	; 0x05
+ 78e:	22 30       	cpi	r18, 0x02	; 2
+ 790:	31 05       	cpc	r19, r1
+ 792:	09 f4       	brne	.+2      	; 0x796 <TACTILE_u8GetButtonState+0x5c>
+ 794:	42 c0       	rjmp	.+132    	; 0x81a <TACTILE_u8GetButtonState+0xe0>
+ 796:	8c 81       	ldd	r24, Y+4	; 0x04
+ 798:	9d 81       	ldd	r25, Y+5	; 0x05
+ 79a:	00 97       	sbiw	r24, 0x00	; 0
+ 79c:	09 f0       	breq	.+2      	; 0x7a0 <TACTILE_u8GetButtonState+0x66>
+ 79e:	cb c0       	rjmp	.+406    	; 0x936 <__stack+0xd7>
+		{
+		case RELEASED:
+			if(ButtonVal==1)
+ 7a0:	80 91 cd 00 	lds	r24, 0x00CD
+ 7a4:	81 30       	cpi	r24, 0x01	; 1
+ 7a6:	a9 f4       	brne	.+42     	; 0x7d2 <TACTILE_u8GetButtonState+0x98>
+				{
+					ButtonsState[Copy_u8ButtonIdx-1]=BOUNCE;
+ 7a8:	89 81       	ldd	r24, Y+1	; 0x01
+ 7aa:	88 2f       	mov	r24, r24
+ 7ac:	90 e0       	ldi	r25, 0x00	; 0
+ 7ae:	01 97       	sbiw	r24, 0x01	; 1
+ 7b0:	fc 01       	movw	r30, r24
+ 7b2:	e3 57       	subi	r30, 0x73	; 115
+ 7b4:	ff 4f       	sbci	r31, 0xFF	; 255
+ 7b6:	82 e0       	ldi	r24, 0x02	; 2
+ 7b8:	80 83       	st	Z, r24
+					ButtonsPressedFlag[Copy_u8ButtonIdx-1]=RELEASED;
+ 7ba:	89 81       	ldd	r24, Y+1	; 0x01
+ 7bc:	88 2f       	mov	r24, r24
+ 7be:	90 e0       	ldi	r25, 0x00	; 0
+ 7c0:	01 97       	sbiw	r24, 0x01	; 1
+ 7c2:	fc 01       	movw	r30, r24
+ 7c4:	e3 56       	subi	r30, 0x63	; 99
+ 7c6:	ff 4f       	sbci	r31, 0xFF	; 255
+ 7c8:	10 82       	st	Z, r1
+					*Copy_u8ButtonVal=RELEASED;
+ 7ca:	ea 81       	ldd	r30, Y+2	; 0x02
+ 7cc:	fb 81       	ldd	r31, Y+3	; 0x03
+ 7ce:	10 82       	st	Z, r1
+ 7d0:	b2 c0       	rjmp	.+356    	; 0x936 <__stack+0xd7>
+				}
+			else
+			{
+				*Copy_u8ButtonVal=RELEASED;
+ 7d2:	ea 81       	ldd	r30, Y+2	; 0x02
+ 7d4:	fb 81       	ldd	r31, Y+3	; 0x03
+ 7d6:	10 82       	st	Z, r1
+ 7d8:	ae c0       	rjmp	.+348    	; 0x936 <__stack+0xd7>
+			}
+			break;
+		case PRESSED:
+			if(ButtonVal==0)
+ 7da:	80 91 cd 00 	lds	r24, 0x00CD
+ 7de:	88 23       	and	r24, r24
+ 7e0:	b9 f4       	brne	.+46     	; 0x810 <TACTILE_u8GetButtonState+0xd6>
+					{
+				ButtonsState[Copy_u8ButtonIdx-1]=BOUNCE;
+ 7e2:	89 81       	ldd	r24, Y+1	; 0x01
+ 7e4:	88 2f       	mov	r24, r24
+ 7e6:	90 e0       	ldi	r25, 0x00	; 0
+ 7e8:	01 97       	sbiw	r24, 0x01	; 1
+ 7ea:	fc 01       	movw	r30, r24
+ 7ec:	e3 57       	subi	r30, 0x73	; 115
+ 7ee:	ff 4f       	sbci	r31, 0xFF	; 255
+ 7f0:	82 e0       	ldi	r24, 0x02	; 2
+ 7f2:	80 83       	st	Z, r24
+				ButtonsPressedFlag[Copy_u8ButtonIdx-1]=PRESSED;
+ 7f4:	89 81       	ldd	r24, Y+1	; 0x01
+ 7f6:	88 2f       	mov	r24, r24
+ 7f8:	90 e0       	ldi	r25, 0x00	; 0
+ 7fa:	01 97       	sbiw	r24, 0x01	; 1
+ 7fc:	fc 01       	movw	r30, r24
+ 7fe:	e3 56       	subi	r30, 0x63	; 99
+ 800:	ff 4f       	sbci	r31, 0xFF	; 255
+ 802:	81 e0       	ldi	r24, 0x01	; 1
+ 804:	80 83       	st	Z, r24
+				*Copy_u8ButtonVal=PRESSED;
+ 806:	ea 81       	ldd	r30, Y+2	; 0x02
+ 808:	fb 81       	ldd	r31, Y+3	; 0x03
+ 80a:	81 e0       	ldi	r24, 0x01	; 1
+ 80c:	80 83       	st	Z, r24
+ 80e:	93 c0       	rjmp	.+294    	; 0x936 <__stack+0xd7>
+					}
+			else
+			{
+				*Copy_u8ButtonVal=PRESSED;
+ 810:	ea 81       	ldd	r30, Y+2	; 0x02
+ 812:	fb 81       	ldd	r31, Y+3	; 0x03
+ 814:	81 e0       	ldi	r24, 0x01	; 1
+ 816:	80 83       	st	Z, r24
+ 818:	8e c0       	rjmp	.+284    	; 0x936 <__stack+0xd7>
+			}
+			break;
+		case BOUNCE:
+			if(ButtonVal==1)
+ 81a:	80 91 cd 00 	lds	r24, 0x00CD
+ 81e:	81 30       	cpi	r24, 0x01	; 1
+ 820:	39 f5       	brne	.+78     	; 0x870 <__stack+0x11>
+			{
+				ButtonsLowCounter[Copy_u8ButtonIdx-1]=0;
+ 822:	89 81       	ldd	r24, Y+1	; 0x01
+ 824:	88 2f       	mov	r24, r24
+ 826:	90 e0       	ldi	r25, 0x00	; 0
+ 828:	01 97       	sbiw	r24, 0x01	; 1
+ 82a:	fc 01       	movw	r30, r24
+ 82c:	e3 55       	subi	r30, 0x53	; 83
+ 82e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 830:	10 82       	st	Z, r1
+				ButtonsHighCounter[Copy_u8ButtonIdx-1]+=1;
+ 832:	89 81       	ldd	r24, Y+1	; 0x01
+ 834:	88 2f       	mov	r24, r24
+ 836:	90 e0       	ldi	r25, 0x00	; 0
+ 838:	9c 01       	movw	r18, r24
+ 83a:	21 50       	subi	r18, 0x01	; 1
+ 83c:	30 40       	sbci	r19, 0x00	; 0
+ 83e:	89 81       	ldd	r24, Y+1	; 0x01
+ 840:	88 2f       	mov	r24, r24
+ 842:	90 e0       	ldi	r25, 0x00	; 0
+ 844:	01 97       	sbiw	r24, 0x01	; 1
+ 846:	fc 01       	movw	r30, r24
+ 848:	e3 54       	subi	r30, 0x43	; 67
+ 84a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 84c:	80 81       	ld	r24, Z
+ 84e:	8f 5f       	subi	r24, 0xFF	; 255
+ 850:	f9 01       	movw	r30, r18
+ 852:	e3 54       	subi	r30, 0x43	; 67
+ 854:	ff 4f       	sbci	r31, 0xFF	; 255
+ 856:	80 83       	st	Z, r24
+				*Copy_u8ButtonVal=ButtonsPressedFlag[Copy_u8ButtonIdx-1];
+ 858:	89 81       	ldd	r24, Y+1	; 0x01
+ 85a:	88 2f       	mov	r24, r24
+ 85c:	90 e0       	ldi	r25, 0x00	; 0
+ 85e:	01 97       	sbiw	r24, 0x01	; 1
+ 860:	fc 01       	movw	r30, r24
+ 862:	e3 56       	subi	r30, 0x63	; 99
+ 864:	ff 4f       	sbci	r31, 0xFF	; 255
+ 866:	80 81       	ld	r24, Z
+ 868:	ea 81       	ldd	r30, Y+2	; 0x02
+ 86a:	fb 81       	ldd	r31, Y+3	; 0x03
+ 86c:	80 83       	st	Z, r24
+ 86e:	26 c0       	rjmp	.+76     	; 0x8bc <__stack+0x5d>
+			}
+			else
+			{
+				ButtonsHighCounter[Copy_u8ButtonIdx-1]=0;
+ 870:	89 81       	ldd	r24, Y+1	; 0x01
+ 872:	88 2f       	mov	r24, r24
+ 874:	90 e0       	ldi	r25, 0x00	; 0
+ 876:	01 97       	sbiw	r24, 0x01	; 1
+ 878:	fc 01       	movw	r30, r24
+ 87a:	e3 54       	subi	r30, 0x43	; 67
+ 87c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 87e:	10 82       	st	Z, r1
+				ButtonsLowCounter[Copy_u8ButtonIdx-1]+=1;
+ 880:	89 81       	ldd	r24, Y+1	; 0x01
+ 882:	88 2f       	mov	r24, r24
+ 884:	90 e0       	ldi	r25, 0x00	; 0
+ 886:	9c 01       	movw	r18, r24
+ 888:	21 50       	subi	r18, 0x01	; 1
+ 88a:	30 40       	sbci	r19, 0x00	; 0
+ 88c:	89 81       	ldd	r24, Y+1	; 0x01
+ 88e:	88 2f       	mov	r24, r24
+ 890:	90 e0       	ldi	r25, 0x00	; 0
+ 892:	01 97       	sbiw	r24, 0x01	; 1
+ 894:	fc 01       	movw	r30, r24
+ 896:	e3 55       	subi	r30, 0x53	; 83
+ 898:	ff 4f       	sbci	r31, 0xFF	; 255
+ 89a:	80 81       	ld	r24, Z
+ 89c:	8f 5f       	subi	r24, 0xFF	; 255
+ 89e:	f9 01       	movw	r30, r18
+ 8a0:	e3 55       	subi	r30, 0x53	; 83
+ 8a2:	ff 4f       	sbci	r31, 0xFF	; 255
+ 8a4:	80 83       	st	Z, r24
+				*Copy_u8ButtonVal=ButtonsPressedFlag[Copy_u8ButtonIdx-1];
+ 8a6:	89 81       	ldd	r24, Y+1	; 0x01
+ 8a8:	88 2f       	mov	r24, r24
+ 8aa:	90 e0       	ldi	r25, 0x00	; 0
+ 8ac:	01 97       	sbiw	r24, 0x01	; 1
+ 8ae:	fc 01       	movw	r30, r24
+ 8b0:	e3 56       	subi	r30, 0x63	; 99
+ 8b2:	ff 4f       	sbci	r31, 0xFF	; 255
+ 8b4:	80 81       	ld	r24, Z
+ 8b6:	ea 81       	ldd	r30, Y+2	; 0x02
+ 8b8:	fb 81       	ldd	r31, Y+3	; 0x03
+ 8ba:	80 83       	st	Z, r24
+			}
+			if(ButtonsHighCounter[Copy_u8ButtonIdx-1]==BOUNCETIME)
+ 8bc:	89 81       	ldd	r24, Y+1	; 0x01
+ 8be:	88 2f       	mov	r24, r24
+ 8c0:	90 e0       	ldi	r25, 0x00	; 0
+ 8c2:	01 97       	sbiw	r24, 0x01	; 1
+ 8c4:	fc 01       	movw	r30, r24
+ 8c6:	e3 54       	subi	r30, 0x43	; 67
+ 8c8:	ff 4f       	sbci	r31, 0xFF	; 255
+ 8ca:	80 81       	ld	r24, Z
+ 8cc:	8a 30       	cpi	r24, 0x0A	; 10
+ 8ce:	b1 f4       	brne	.+44     	; 0x8fc <__stack+0x9d>
+			{
+				ButtonsState[Copy_u8ButtonIdx-1]=PRESSED;
+ 8d0:	89 81       	ldd	r24, Y+1	; 0x01
+ 8d2:	88 2f       	mov	r24, r24
+ 8d4:	90 e0       	ldi	r25, 0x00	; 0
+ 8d6:	01 97       	sbiw	r24, 0x01	; 1
+ 8d8:	fc 01       	movw	r30, r24
+ 8da:	e3 57       	subi	r30, 0x73	; 115
+ 8dc:	ff 4f       	sbci	r31, 0xFF	; 255
+ 8de:	81 e0       	ldi	r24, 0x01	; 1
+ 8e0:	80 83       	st	Z, r24
+				ButtonsHighCounter[Copy_u8ButtonIdx-1]=0;
+ 8e2:	89 81       	ldd	r24, Y+1	; 0x01
+ 8e4:	88 2f       	mov	r24, r24
+ 8e6:	90 e0       	ldi	r25, 0x00	; 0
+ 8e8:	01 97       	sbiw	r24, 0x01	; 1
+ 8ea:	fc 01       	movw	r30, r24
+ 8ec:	e3 54       	subi	r30, 0x43	; 67
+ 8ee:	ff 4f       	sbci	r31, 0xFF	; 255
+ 8f0:	10 82       	st	Z, r1
+				*Copy_u8ButtonVal=PRESSED;
+ 8f2:	ea 81       	ldd	r30, Y+2	; 0x02
+ 8f4:	fb 81       	ldd	r31, Y+3	; 0x03
+ 8f6:	81 e0       	ldi	r24, 0x01	; 1
+ 8f8:	80 83       	st	Z, r24
+ 8fa:	1d c0       	rjmp	.+58     	; 0x936 <__stack+0xd7>
+			}
+			else if (ButtonsLowCounter[Copy_u8ButtonIdx-1]==BOUNCETIME)
+ 8fc:	89 81       	ldd	r24, Y+1	; 0x01
+ 8fe:	88 2f       	mov	r24, r24
+ 900:	90 e0       	ldi	r25, 0x00	; 0
+ 902:	01 97       	sbiw	r24, 0x01	; 1
+ 904:	fc 01       	movw	r30, r24
+ 906:	e3 55       	subi	r30, 0x53	; 83
+ 908:	ff 4f       	sbci	r31, 0xFF	; 255
+ 90a:	80 81       	ld	r24, Z
+ 90c:	8a 30       	cpi	r24, 0x0A	; 10
+ 90e:	99 f4       	brne	.+38     	; 0x936 <__stack+0xd7>
+			{
+				ButtonsState[Copy_u8ButtonIdx-1]=RELEASED;
+ 910:	89 81       	ldd	r24, Y+1	; 0x01
+ 912:	88 2f       	mov	r24, r24
+ 914:	90 e0       	ldi	r25, 0x00	; 0
+ 916:	01 97       	sbiw	r24, 0x01	; 1
+ 918:	fc 01       	movw	r30, r24
+ 91a:	e3 57       	subi	r30, 0x73	; 115
+ 91c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 91e:	10 82       	st	Z, r1
+				ButtonsLowCounter[Copy_u8ButtonIdx-1]=0;
+ 920:	89 81       	ldd	r24, Y+1	; 0x01
+ 922:	88 2f       	mov	r24, r24
+ 924:	90 e0       	ldi	r25, 0x00	; 0
+ 926:	01 97       	sbiw	r24, 0x01	; 1
+ 928:	fc 01       	movw	r30, r24
+ 92a:	e3 55       	subi	r30, 0x53	; 83
+ 92c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 92e:	10 82       	st	Z, r1
+				*Copy_u8ButtonVal=RELEASED;
+ 930:	ea 81       	ldd	r30, Y+2	; 0x02
+ 932:	fb 81       	ldd	r31, Y+3	; 0x03
+ 934:	10 82       	st	Z, r1
+			break;
+		default:
+			break;
+		}
+
+}
+ 936:	0f 90       	pop	r0
+ 938:	0f 90       	pop	r0
+ 93a:	0f 90       	pop	r0
+ 93c:	0f 90       	pop	r0
+ 93e:	0f 90       	pop	r0
+ 940:	cf 91       	pop	r28
+ 942:	df 91       	pop	r29
+ 944:	08 95       	ret
+
+00000946 <_exit>:
+ 946:	f8 94       	cli
+
+00000948 <__stop_program>:
+ 948:	ff cf       	rjmp	.-2      	; 0x948 <__stop_program>
